@@ -7,6 +7,10 @@ the root `index.html` is the hub.
   - Support landing: `index.html`
   - Support article (English): `support.html` / （中文）: `support-zh.html`
   - Privacy Policy (English): `privacy.html` / （中文）: `privacy-zh.html`
+- `gifking/` — Emoji King GIF (表情帝GIF, iOS)
+  - Support landing: `index.html`
+  - Support article (English): `support.html` / （中文）: `support-zh.html`
+  - Privacy Policy (English): `privacy.html` / （中文）: `privacy-zh.html`
 
 ## Public URLs (after enabling GitHub Pages)
 
@@ -20,6 +24,15 @@ Wallpapers:
 - https://nightwolf-chen.github.io/product-support/wallpapers/privacy.html ← use this
   as the **Privacy Policy URL** in App Store Connect (English primary).
 - https://nightwolf-chen.github.io/product-support/wallpapers/privacy-zh.html ← Chinese version.
+
+GifKing (Emoji King GIF / 表情帝GIF):
+- https://nightwolf-chen.github.io/product-support/gifking/ ← landing
+- https://nightwolf-chen.github.io/product-support/gifking/support.html ← use this
+  as the **Support URL** in App Store Connect (English primary).
+- https://nightwolf-chen.github.io/product-support/gifking/support-zh.html ← Chinese version.
+- https://nightwolf-chen.github.io/product-support/gifking/privacy.html ← use this
+  as the **Privacy Policy URL** in App Store Connect (English primary).
+- https://nightwolf-chen.github.io/product-support/gifking/privacy-zh.html ← Chinese version.
 
 ## Adding another app
 
