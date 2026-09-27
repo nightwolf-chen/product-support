@@ -115,8 +115,13 @@ for fname, base, text in pages:
         check(f"{fname}-link-{href}", str(target).startswith(str(ROOT)) and target.exists(),
               "broken internal link")
 
-# Hub lists the app; app landing links all four pages.
+# Hub lists the app with sub-links to all its pages.
 check("hub-links-wallpapers", "wallpapers/" in hub, "hub must link the wallpapers app")
+check("hub-product-section", 'id="wallpapers"' in hub and "Our Apps" in hub,
+      "hub must be a products page with a wallpapers section")
+for page in ["wallpapers/support.html", "wallpapers/support-zh.html",
+             "wallpapers/privacy.html", "wallpapers/privacy-zh.html"]:
+    check(f"hub-sublink-{page.split('/')[-1]}", page in hub, f"hub must sub-link {page}")
 for page in ["support.html", "support-zh.html", "privacy.html", "privacy-zh.html"]:
     check(f"wp-index-links-{page}", page in wp_index, f"app landing must link {page}")
 
