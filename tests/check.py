@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Checks for the product-support static site.
 
-Run: python3 tests/check.py
-Exit 0 = all pass.
+Layout: root index.html is the app hub; each app lives in its own subdir
+(e.g. wallpapers/). Run: python3 tests/check.py. Exit 0 = all pass.
 """
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+WP = ROOT / "wallpapers"
 failures = []
 
 
@@ -30,17 +31,20 @@ class LinkParser(HTMLParser):
                 self.links.append(href)
 
 
-for fname in ["privacy.html", "privacy-zh.html", "support.html", "support-zh.html",
-              "index.html", "README.md"]:
+for fname in ["index.html", "README.md", "wallpapers/index.html",
+              "wallpapers/privacy.html", "wallpapers/privacy-zh.html",
+              "wallpapers/support.html", "wallpapers/support-zh.html"]:
     check(f"{fname}-exists", (ROOT / fname).exists())
 
-privacy_en = (ROOT / "privacy.html").read_text()
-privacy_zh = (ROOT / "privacy-zh.html").read_text()
-support_en = (ROOT / "support.html").read_text()
-support_zh = (ROOT / "support-zh.html").read_text()
-index = (ROOT / "index.html").read_text()
+privacy_en = (WP / "privacy.html").read_text()
+privacy_zh = (WP / "privacy-zh.html").read_text()
+support_en = (WP / "support.html").read_text()
+support_zh = (WP / "support-zh.html").read_text()
+hub = (ROOT / "index.html").read_text()
+wp_index = (WP / "index.html").read_text()
+readme = (ROOT / "README.md").read_text()
 
-# English page: required disclosures (must match PrivacyInfo.xcprivacy + ATT behavior).
+# English privacy page: required disclosures (must match PrivacyInfo.xcprivacy + ATT).
 for kw in ["Tracking", "AdMob", "IDFA", "googleads.g.doubleclick.net",
             "googlesyndication.com", "App Tracking Transparency",
             "Unsplash", "Pexels", "Pixabay", "Flickr", "Openverse",
@@ -48,30 +52,38 @@ for kw in ["Tracking", "AdMob", "IDFA", "googleads.g.doubleclick.net",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"en-has-{kw[:24]}", kw in privacy_en, f"missing {kw!r}")
 
-# English page must not contain Chinese body copy (split pages, not combined).
+# English pages must not contain Chinese body copy (split pages, not combined).
 check("en-no-chinese-body", "隐私政策" not in privacy_en and "跟踪透明度" not in privacy_en,
       "English page should link the Chinese page, not embed it")
 
-# Chinese page: full translation present.
+# Chinese privacy page: full translation present.
 for kw in ["隐私政策", "跟踪", "广告标识符", "生效日期", "IDFA", "AdMob",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"zh-has-{kw[:12]}", kw in privacy_zh, f"missing {kw!r}")
 
-# Cross-links between language versions.
-check("en-links-zh", "privacy-zh.html" in privacy_en, "EN page must link 中文版")
-check("zh-links-en", "privacy.html" in privacy_zh, "ZH page must link English version")
+# Cross-links between language versions + hub backlinks.
+check("en-links-zh", "privacy-zh.html" in privacy_en, "EN privacy must link 中文版")
+check("zh-links-en", "privacy.html" in privacy_zh, "ZH privacy must link English version")
+check("support-en-links-zh", "support-zh.html" in support_en, "EN support must link 中文版")
+check("support-zh-links-en", 'href="support.html"' in support_zh,
+      "ZH support must link English version")
+check("support-en-links-privacy", "privacy.html" in support_en, "EN support must link privacy")
+check("support-zh-links-privacy", "privacy-zh.html" in support_zh, "ZH support must link privacy")
+for name, text in [("privacy_en", privacy_en), ("privacy_zh", privacy_zh),
+                   ("support_en", support_en), ("support_zh", support_zh)]:
+    check(f"{name}-links-hub", "../index.html" in text, "app page must link hub")
 
-# Effective dates on both.
+# Effective dates on both privacy pages.
 check("en-date", "September 27, 2026" in privacy_en, "EN effective date missing")
 check("zh-date", "2026 年 9 月 27 日" in privacy_zh, "ZH effective date missing")
 
 # No leftover placeholders in any page.
 for kw in ["TODO", "FIXME", "your-email@", "example.com", "lorem"]:
     check(f"no-{kw.lower()}", all(kw.lower() not in t.lower()
-          for t in [privacy_en, privacy_zh, support_en, support_zh]),
+          for t in [privacy_en, privacy_zh, support_en, support_zh, hub, wp_index]),
           "placeholder left")
 
-# Support pages: FAQ content in the right language, cross-linked.
+# Support pages: FAQ content in the right language.
 for kw in ["wallpaper", "Use as Wallpaper", "Tracking", "AdMob", "cache",
             "Favorites", "iOS 15",
             "https://github.com/nightwolf-chen/product-support/issues"]:
@@ -81,16 +93,14 @@ check("support-en-no-chinese", "设为壁纸" not in support_en and "常见问�
 for kw in ["设为壁纸", "用作墙纸", "跟踪", "缓存", "收藏", "常见问题",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"support-zh-{kw[:12]}", kw in support_zh, f"missing {kw!r}")
-check("support-en-links-zh", "support-zh.html" in support_en, "EN support must link 中文版")
-check("support-zh-links-en", 'href="support.html"' in support_zh,
-      "ZH support must link English version")
-check("support-en-links-privacy", "privacy.html" in support_en, "EN support must link privacy")
-check("support-zh-links-privacy", "privacy-zh.html" in support_zh, "ZH support must link privacy")
 
-# HTML parses + internal links resolve.
-for fname, text in [("privacy.html", privacy_en), ("privacy-zh.html", privacy_zh),
-                    ("support.html", support_en), ("support-zh.html", support_zh),
-                    ("index.html", index)]:
+# HTML parses + internal links resolve (relative to each file's directory).
+pages = [("index.html", ROOT, hub), ("wallpapers/index.html", WP, wp_index),
+         ("wallpapers/privacy.html", WP, privacy_en),
+         ("wallpapers/privacy-zh.html", WP, privacy_zh),
+         ("wallpapers/support.html", WP, support_en),
+         ("wallpapers/support-zh.html", WP, support_zh)]
+for fname, base, text in pages:
     p = LinkParser()
     try:
         p.feed(text)
@@ -101,20 +111,19 @@ for fname, text in [("privacy.html", privacy_en), ("privacy-zh.html", privacy_zh
     for href in p.links:
         if href.startswith("http"):
             continue
-        target = (ROOT / href).resolve()
+        target = (base / href).resolve()
         check(f"{fname}-link-{href}", str(target).startswith(str(ROOT)) and target.exists(),
               "broken internal link")
 
-check("index-links-privacy-en", "privacy.html" in index, "index must link English privacy page")
-check("index-links-support-en", "support.html" in index, "index must link English support page")
-check("index-links-support-zh", "support-zh.html" in index, "index must link Chinese support page")
-check("readme-links-support-url",
-      "nightwolf-chen.github.io/product-support/support.html" in (ROOT / "README.md").read_text(),
-      "README must document the public support URL")
-check("index-links-privacy-zh", "privacy-zh.html" in index, "index must link Chinese privacy page")
-check("readme-links-privacy-url",
-      "nightwolf-chen.github.io/product-support/privacy.html" in (ROOT / "README.md").read_text(),
-      "README must document the public privacy URL")
+# Hub lists the app; app landing links all four pages.
+check("hub-links-wallpapers", "wallpapers/" in hub, "hub must link the wallpapers app")
+for page in ["support.html", "support-zh.html", "privacy.html", "privacy-zh.html"]:
+    check(f"wp-index-links-{page}", page in wp_index, f"app landing must link {page}")
+
+# README documents the new public URLs.
+for url in ["product-support/wallpapers/support.html",
+            "product-support/wallpapers/privacy.html"]:
+    check(f"readme-{url.split('/')[-1]}", url in readme, "README must document " + url)
 
 print()
 if failures:

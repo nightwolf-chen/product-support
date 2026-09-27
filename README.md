@@ -1,22 +1,30 @@
 # product-support
 
-Support site for Wallpapers (壁纸美图, iOS) by nightwolf-chen.
+Support site for apps by nightwolf-chen. Each app lives in its own subdir;
+the root `index.html` is the hub.
 
-- Support page: `index.html`
-- Support article (English): `support.html`
-- 支持文章（中文）: `support-zh.html`
-- Privacy Policy (English): `privacy.html`
-- 隐私政策（中文）: `privacy-zh.html`
+- `wallpapers/` — Wallpapers (壁纸美图, iOS)
+  - Support landing: `index.html`
+  - Support article (English): `support.html` / （中文）: `support-zh.html`
+  - Privacy Policy (English): `privacy.html` / （中文）: `privacy-zh.html`
 
 ## Public URLs (after enabling GitHub Pages)
 
-- https://nightwolf-chen.github.io/product-support/
-- https://nightwolf-chen.github.io/product-support/support.html ← use this as the
-  **Support URL** in App Store Connect (English primary).
-- https://nightwolf-chen.github.io/product-support/support-zh.html ← Chinese version.
-- https://nightwolf-chen.github.io/product-support/privacy.html ← use this as the
-  **Privacy Policy URL** in App Store Connect (English primary).
-- https://nightwolf-chen.github.io/product-support/privacy-zh.html ← Chinese version.
+Hub: https://nightwolf-chen.github.io/product-support/
+
+Wallpapers:
+- https://nightwolf-chen.github.io/product-support/wallpapers/ ← landing
+- https://nightwolf-chen.github.io/product-support/wallpapers/support.html ← use this
+  as the **Support URL** in App Store Connect (English primary).
+- https://nightwolf-chen.github.io/product-support/wallpapers/support-zh.html ← Chinese version.
+- https://nightwolf-chen.github.io/product-support/wallpapers/privacy.html ← use this
+  as the **Privacy Policy URL** in App Store Connect (English primary).
+- https://nightwolf-chen.github.io/product-support/wallpapers/privacy-zh.html ← Chinese version.
+
+## Adding another app
+
+Create `<appname>/` with the same page set, link it from the root `index.html`,
+extend `tests/check.py`, and document its URLs here.
 
 ## Enable Pages
 
