@@ -3,12 +3,17 @@
 Support site for Wallpapers (壁纸美图, iOS) by nightwolf-chen.
 
 - Support page: `index.html`
+- Support article (English): `support.html`
+- 支持文章（中文）: `support-zh.html`
 - Privacy Policy (English): `privacy.html`
 - 隐私政策（中文）: `privacy-zh.html`
 
 ## Public URLs (after enabling GitHub Pages)
 
 - https://nightwolf-chen.github.io/product-support/
+- https://nightwolf-chen.github.io/product-support/support.html ← use this as the
+  **Support URL** in App Store Connect (English primary).
+- https://nightwolf-chen.github.io/product-support/support-zh.html ← Chinese version.
 - https://nightwolf-chen.github.io/product-support/privacy.html ← use this as the
   **Privacy Policy URL** in App Store Connect (English primary).
 - https://nightwolf-chen.github.io/product-support/privacy-zh.html ← Chinese version.

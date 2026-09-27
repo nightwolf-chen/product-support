@@ -30,11 +30,14 @@ class LinkParser(HTMLParser):
                 self.links.append(href)
 
 
-for fname in ["privacy.html", "privacy-zh.html", "index.html", "README.md"]:
+for fname in ["privacy.html", "privacy-zh.html", "support.html", "support-zh.html",
+              "index.html", "README.md"]:
     check(f"{fname}-exists", (ROOT / fname).exists())
 
 privacy_en = (ROOT / "privacy.html").read_text()
 privacy_zh = (ROOT / "privacy-zh.html").read_text()
+support_en = (ROOT / "support.html").read_text()
+support_zh = (ROOT / "support-zh.html").read_text()
 index = (ROOT / "index.html").read_text()
 
 # English page: required disclosures (must match PrivacyInfo.xcprivacy + ATT behavior).
@@ -62,13 +65,32 @@ check("zh-links-en", "privacy.html" in privacy_zh, "ZH page must link English ve
 check("en-date", "September 27, 2026" in privacy_en, "EN effective date missing")
 check("zh-date", "2026 年 9 月 27 日" in privacy_zh, "ZH effective date missing")
 
-# No leftover placeholders in either page.
+# No leftover placeholders in any page.
 for kw in ["TODO", "FIXME", "your-email@", "example.com", "lorem"]:
-    check(f"no-{kw.lower()}", kw.lower() not in privacy_en.lower() and kw.lower() not in privacy_zh.lower(),
+    check(f"no-{kw.lower()}", all(kw.lower() not in t.lower()
+          for t in [privacy_en, privacy_zh, support_en, support_zh]),
           "placeholder left")
 
+# Support pages: FAQ content in the right language, cross-linked.
+for kw in ["wallpaper", "Use as Wallpaper", "Tracking", "AdMob", "cache",
+            "Favorites", "iOS 15",
+            "https://github.com/nightwolf-chen/product-support/issues"]:
+    check(f"support-en-{kw[:20]}", kw in support_en, f"missing {kw!r}")
+check("support-en-no-chinese", "设为壁纸" not in support_en and "常见问题" not in support_en,
+      "EN support should link the Chinese page, not embed it")
+for kw in ["设为壁纸", "用作墙纸", "跟踪", "缓存", "收藏", "常见问题",
+            "https://github.com/nightwolf-chen/product-support/issues"]:
+    check(f"support-zh-{kw[:12]}", kw in support_zh, f"missing {kw!r}")
+check("support-en-links-zh", "support-zh.html" in support_en, "EN support must link 中文版")
+check("support-zh-links-en", 'href="support.html"' in support_zh,
+      "ZH support must link English version")
+check("support-en-links-privacy", "privacy.html" in support_en, "EN support must link privacy")
+check("support-zh-links-privacy", "privacy-zh.html" in support_zh, "ZH support must link privacy")
+
 # HTML parses + internal links resolve.
-for fname, text in [("privacy.html", privacy_en), ("privacy-zh.html", privacy_zh), ("index.html", index)]:
+for fname, text in [("privacy.html", privacy_en), ("privacy-zh.html", privacy_zh),
+                    ("support.html", support_en), ("support-zh.html", support_zh),
+                    ("index.html", index)]:
     p = LinkParser()
     try:
         p.feed(text)
@@ -84,6 +106,11 @@ for fname, text in [("privacy.html", privacy_en), ("privacy-zh.html", privacy_zh
               "broken internal link")
 
 check("index-links-privacy-en", "privacy.html" in index, "index must link English privacy page")
+check("index-links-support-en", "support.html" in index, "index must link English support page")
+check("index-links-support-zh", "support-zh.html" in index, "index must link Chinese support page")
+check("readme-links-support-url",
+      "nightwolf-chen.github.io/product-support/support.html" in (ROOT / "README.md").read_text(),
+      "README must document the public support URL")
 check("index-links-privacy-zh", "privacy-zh.html" in index, "index must link Chinese privacy page")
 check("readme-links-privacy-url",
       "nightwolf-chen.github.io/product-support/privacy.html" in (ROOT / "README.md").read_text(),
