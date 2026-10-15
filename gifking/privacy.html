@@ -27,18 +27,22 @@ App: Emoji King GIF (iOS, iPhone) · <a href="privacy-zh.html">中文版</a> ·
 <p>This Privacy Policy describes how the <strong>Emoji King GIF (表情帝GIF)</strong> iOS app
 handles your data. The app is free, requires no account, and stores your favorites
 on your device. This policy mirrors the app's Apple privacy manifests
-(<code>PrivacyInfo.xcprivacy</code>): tracking is off, nothing is linked to you,
-and analytics data is not used for tracking.</p>
+(<code>PrivacyInfo.xcprivacy</code>): product analytics never tracks and is never
+linked to you; advertising through Google AdMob may link advertising data, and
+that is gated by the system tracking prompt described below.</p>
 
 <h2>1. Summary</h2>
 <ul>
-  <li><strong>Tracking:</strong> No. The app does not track you across other companies'
-      apps or websites, and declares no tracking domains. Analytics uses the NO-IDFA
-      variant of the UMeng SDK, so no advertising identifier (IDFA) is involved.</li>
-  <li><strong>Data linked to you:</strong> None.</li>
-  <li><strong>Data not linked to you:</strong> Device ID and Usage / Performance Data,
-      used for product analytics only — not linked to your identity, not used for
-      tracking, never sold.</li>
+  <li><strong>Tracking:</strong> Yes, for advertising only. Personalized ads via
+      Google AdMob link advertising data (including the advertising identifier,
+      IDFA, when you allow it). The App Tracking Transparency prompt appears on
+      first launch, before any tracking data is collected; declining still gives
+      you the full app with non-personalized ads.</li>
+  <li><strong>Data linked to you:</strong> Advertising Data and Device ID
+      (Google AdMob, for third-party and developer advertising).</li>
+  <li><strong>Data not linked to you:</strong> UMeng analytics identifiers
+      (NO-IDFA build), Usage Data and Performance Data — product analytics only,
+      not linked to your identity, not used for tracking, never sold.</li>
   <li><strong>Not collected:</strong> precise location, contacts, health data, account
       credentials, or purchase history (there are no accounts and no in-app purchases).</li>
 </ul>
@@ -46,7 +50,11 @@ and analytics data is not used for tracking.</p>
 <h2>2. Data we collect</h2>
 <table>
   <tr><th>Data</th><th>Linked to you</th><th>Used for tracking</th><th>Purposes</th></tr>
-  <tr><td>Device ID (analytics identifiers, no IDFA)</td><td>No</td><td>No</td>
+  <tr><td>Advertising Data (e.g. ad impressions and interactions)</td><td>Yes</td><td>Yes</td>
+      <td>Third-party advertising, developer advertising, analytics</td></tr>
+  <tr><td>Device ID (including the Identifier for Advertisers, IDFA, when allowed)</td><td>Yes</td><td>Yes</td>
+      <td>Third-party advertising, developer advertising, analytics</td></tr>
+  <tr><td>Device ID (UMeng NO-IDFA analytics identifiers)</td><td>No</td><td>No</td>
       <td>Analytics</td></tr>
   <tr><td>Usage Data / Performance Data (e.g. app feature use, diagnostics)</td><td>No</td>
       <td>No</td><td>Analytics</td></tr>
@@ -59,7 +67,15 @@ and analytics data is not used for tracking.</p>
 to understand aggregate app usage and improve stability; they are not linked to your
 identity, not used for tracking, and not sold to data brokers.</p>
 
-<h2>4. Advertising</h2>
+<h2>4. Advertising and tracking permission</h2>
+<p>On first launch — once the app is foreground with a live window — the app
+shows the App Tracking Transparency prompt ("This identifier will be used to
+deliver personalized ads to you"), before any tracking data is collected. If
+you allow it, the advertising identifier (IDFA) is shared with Google AdMob
+to deliver personalized ads and measure ad performance. If you decline,
+everything still works with non-personalized ads. You can change your choice
+at any time in iOS <strong>Settings → Privacy &amp; Security →
+Tracking</strong>.</p>
 <p>The app is free and shows banner and interstitial ads via Google AdMob. Ad requests go
 to Google's ad network (including <code>googleads.g.doubleclick.net</code> and
 <code>googlesyndication.com</code>); Google's handling of ad data is described in
@@ -82,8 +98,9 @@ removes this locally stored data.</p>
 
 <h2>7. Children</h2>
 <p>The app is rated 4+ and is suitable for a general audience. We do not knowingly
-collect personal data from children; the analytics and advertising data described
-above is handled as stated, with nothing linked to the user.</p>
+collect personal data from children; analytics data is never linked to the user,
+and advertising data is handled as stated above, subject to the tracking
+permission.</p>
 
 <h2>8. Data retention and security</h2>
 <p>We retain no personal data on our own servers because we collect none directly.

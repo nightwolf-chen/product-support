@@ -152,6 +152,7 @@ for page in ["gifking/support.html", "gifking/support-zh.html",
 
 # GifKing (Emoji King GIF): same page conventions as wallpapers.
 for kw in ["Tracking", "AdMob", "UMeng", "NO-IDFA", "Device ID",
+            "App Tracking Transparency", "IDFA",
             "googleads.g.doubleclick.net", "googlesyndication.com",
             "PrivacyInfo.xcprivacy",
             "https://github.com/nightwolf-chen/product-support/issues"]:
@@ -159,7 +160,7 @@ for kw in ["Tracking", "AdMob", "UMeng", "NO-IDFA", "Device ID",
 check("gk-en-no-chinese-body",
       "隐私政策" not in gk_privacy_en and "常见问题" not in gk_privacy_en,
       "English page should link the Chinese page, not embed it")
-for kw in ["隐私政策", "跟踪", "友盟", "广告", "生效日期", "IDFA",
+for kw in ["隐私政策", "跟踪", "透明度", "友盟", "广告", "生效日期", "IDFA",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"gk-zh-{kw[:12]}", kw in gk_privacy_zh, f"missing {kw!r}")
 check("gk-en-links-zh", "privacy-zh.html" in gk_privacy_en, "EN privacy must link 中文版")
@@ -178,12 +179,13 @@ for name, text in [("gk_privacy_en", gk_privacy_en), ("gk_privacy_zh", gk_privac
 check("gk-en-date", "September 27, 2026" in gk_privacy_en, "EN effective date missing")
 check("gk-zh-date", "2026 年 9 月 27 日" in gk_privacy_zh, "ZH effective date missing")
 for kw in ["GIF", "Favorites", "Share", "AdMob", "Dark Mode", "Photos",
+            "Tracking Transparency",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"gk-support-en-{kw[:20]}", kw in gk_support_en, f"missing {kw!r}")
 check("gk-support-en-no-chinese",
       "常见问题" not in gk_support_en and "收藏" not in gk_support_en,
       "EN support should link the Chinese page, not embed it")
-for kw in ["表情", "收藏", "分享", "广告", "深色", "常见问题",
+for kw in ["表情", "收藏", "分享", "广告", "跟踪", "深色", "常见问题",
             "https://github.com/nightwolf-chen/product-support/issues"]:
     check(f"gk-support-zh-{kw[:12]}", kw in gk_support_zh, f"missing {kw!r}")
 
