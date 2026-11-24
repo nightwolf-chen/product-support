@@ -34,6 +34,11 @@ GifKing (Emoji King GIF / 表情帝GIF):
   as the **Privacy Policy URL** in App Store Connect (English primary).
 - https://nightwolf-chen.github.io/product-support/gifking/privacy-zh.html ← Chinese version.
 
+- `metronome/` — Metronome (节拍器与吉他练习, iOS)
+  - Support: https://nightwolf-chen.github.io/product-support/metronome/support.html
+  - Privacy: https://nightwolf-chen.github.io/product-support/metronome/privacy.html
+  - Chinese versions: `support-zh.html`, `privacy-zh.html`
+
 ## Adding another app
 
 Create `<appname>/` with the same page set, link it from the root `index.html`,
